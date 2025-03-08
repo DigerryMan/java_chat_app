@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
             messageSender.notifyDisconnect(this);
             System.out.println("Client " + id + " disconnected.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("[ClientHandler] Error reading from client " + id);
         } finally {
             try {
                 in.close();

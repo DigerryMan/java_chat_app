@@ -52,7 +52,6 @@ public class ChatClient {
     }
 
     private static void disconnect() throws InterruptedException, IOException {
-        System.out.println("Disconnecting from server!!!!!!!");
         if (isConnectionEstablished()) {
             System.out.println("Closing connection");
             messageReceiverThread.end();

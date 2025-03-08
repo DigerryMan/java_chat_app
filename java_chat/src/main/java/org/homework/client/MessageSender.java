@@ -39,7 +39,6 @@ public class MessageSender {
                 tcpOut.println(userInput);
             }
         }
-        System.out.println("PO WAJLU");
     }
 
     private boolean isUdpMessage(String message){

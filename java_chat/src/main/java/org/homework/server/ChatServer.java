@@ -13,7 +13,7 @@ public class ChatServer {
     public static final String HOST = "localhost";
     public static final int PORT = 12345;
     private static int clientId = 0;
-    private static final int MAX_CLIENTS = 10;
+    private static final int MAX_CLIENTS = 2;
 
     public static void main(String[] args){
 
@@ -26,7 +26,7 @@ public class ChatServer {
             udpHandler = new UDPHandler(udpSocket, messageSender);
             udpHandler.start();
             while (true) {
-                if (((ThreadPoolExecutor) executor).getActiveCount() < MAX_CLIENTS) {
+                if(messageSender.getNumberOfClients() < MAX_CLIENTS) {
                     acceptNewClient(tcpSocket, messageSender, executor);
                 }
             }
@@ -38,7 +38,7 @@ public class ChatServer {
         }
     }
 
-    private static void acceptNewClient(ServerSocket serverSocket, MessageSender messageSender, ExecutorService executor) throws IOException {
+    private static void acceptNewClient(ServerSocket serverSocket, MessageSender messageSender, ExecutorService executor)  throws IOException {
         Socket clientSocket = serverSocket.accept();
         ClientHandler clientHandler = new ClientHandler(clientSocket, messageSender, clientId++);
         messageSender.add(clientHandler, clientSocket.getOutputStream());

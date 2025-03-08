@@ -57,4 +57,8 @@ public class MessageSender {
             }
         }
     }
+
+    public int getNumberOfClients() {
+        return clients.size();
+    }
 }

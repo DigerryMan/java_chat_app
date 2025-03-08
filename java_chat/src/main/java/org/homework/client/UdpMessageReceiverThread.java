@@ -15,14 +15,13 @@ public class UdpMessageReceiverThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println("UDP handler started");
         try {
             byte[] buffer = new byte[1024];
             while (running) {
                 receiveMessageAndSendResponse(buffer, socket);
             }
         } catch (IOException e) {
-            System.out.println("[UDPMessageReceiver] Cannot read from server!");
+            System.out.println("[UDPMessageReceiver] Closed!");
         } finally {
             socket.close();
         }
