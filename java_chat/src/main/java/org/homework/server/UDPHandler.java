@@ -23,7 +23,7 @@ public class UDPHandler extends Thread{
                     receiveMessageAndSendResponse(buffer, socket);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("[UDPHandler] Closed!");
             } finally {
                 socket.close();
             }

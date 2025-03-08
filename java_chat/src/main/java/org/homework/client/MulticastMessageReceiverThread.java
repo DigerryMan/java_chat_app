@@ -7,7 +7,6 @@ import java.net.MulticastSocket;
 public class MulticastMessageReceiverThread extends Thread {
 
     private final MulticastSocket multicastSocket;
-    private boolean running = true;
 
     public MulticastMessageReceiverThread(MulticastSocket multicastSocket) {
         this.multicastSocket = multicastSocket;
@@ -17,7 +16,7 @@ public class MulticastMessageReceiverThread extends Thread {
     public void run() {
         try {
             byte[] buffer = new byte[1024];
-            while (running) {
+            while (true) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 multicastSocket.receive(packet);
                 String message = new String(packet.getData(), 0, packet.getLength());
@@ -28,9 +27,5 @@ public class MulticastMessageReceiverThread extends Thread {
         } finally {
             multicastSocket.close();
         }
-    }
-
-    public void end() {
-        running = false;
     }
 }

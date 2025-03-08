@@ -7,9 +7,6 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-import static java.lang.Thread.sleep;
-
 public class ChatClient {
 
     private static Socket socket = null;
@@ -43,20 +40,19 @@ public class ChatClient {
             executor.execute(multicastMessageReceiverThread);
 
             messageSender.sendMessagesFromConsole();
-        }catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             System.out.println("Unknown host: " + ChatServer.HOST);
-        }
-        catch (SocketException e) {
+        } catch (SocketException e) {
             System.out.println("Could not create socket: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Could not establish connection to server.");
+            System.out.println("Could not establish connection to server");
         }
 
         finally {
             try {
                 disconnect();
             }catch (InterruptedException | IOException e){
-                System.out.println("Could not disconnect from server.");
+                System.out.println("Could not disconnect from server");
             }
 
         }

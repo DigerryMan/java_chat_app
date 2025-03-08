@@ -15,12 +15,13 @@ public class MessageSender {
     private final MulticastSocket multicastSocket;
     private final InetSocketAddress multicastAddress;
     private static final String ASCII_ART =
-            "_    _  ______ _     \n" +
-            "| |  | ||  ____| |    \n" +
-            "| |__| || |__  | |__  \n" +
-            "|  __  ||  __| | '_ \\ \n" +
-            "| |  | || |____| | | |\n" +
-            "|_|  |_||______|_| |_|";
+            """
+                    _    _  ______ _    \s
+                    | |  | ||  ____| |   \s
+                    | |__| || |__  | |__ \s
+                    |  __  ||  __| | '_ \\\s
+                    | |  | || |____| | | |
+                    |_|  |_||______|_| |_|""";
 
 
     MessageSender(OutputStream tcpOutputStream, DatagramSocket udpSocket, MulticastSocket multicastSocket, InetSocketAddress multicastAddress){

@@ -7,7 +7,6 @@ import java.net.DatagramSocket;
 public class UdpMessageReceiverThread extends Thread {
 
     private final DatagramSocket socket;
-    private boolean running = true;
 
     public UdpMessageReceiverThread(DatagramSocket socket) {
         this.socket = socket;
@@ -17,7 +16,7 @@ public class UdpMessageReceiverThread extends Thread {
     public void run() {
         try {
             byte[] buffer = new byte[1024];
-            while (running) {
+            while (true) {
                 receiveMessageAndSendResponse(buffer, socket);
             }
         } catch (IOException e) {
@@ -25,10 +24,6 @@ public class UdpMessageReceiverThread extends Thread {
         } finally {
             socket.close();
         }
-    }
-
-    public void end(){
-        running = false;
     }
 
     private void receiveMessageAndSendResponse(byte[] receiveBuffer, DatagramSocket udpSocket) throws IOException {

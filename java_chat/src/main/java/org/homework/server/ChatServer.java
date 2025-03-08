@@ -17,7 +17,7 @@ public class ChatServer {
     public static void main(String[] args){
 
         System.out.println("Chat Server started!");
-        ExecutorService executor = Executors.newFixedThreadPool(MAX_CLIENTS);
+        ExecutorService clientsExecutor = Executors.newFixedThreadPool(MAX_CLIENTS);
         MessageSender messageSender = new MessageSender();
         UDPHandler udpHandler = null;
 
@@ -26,21 +26,21 @@ public class ChatServer {
             udpHandler.start();
             while (true) {
                 if(messageSender.getNumberOfClients() < MAX_CLIENTS) {
-                    acceptNewClient(tcpSocket, messageSender, executor);
+                    acceptNewClient(tcpSocket, messageSender, clientsExecutor);
                 }
             }
         } catch (IOException e) {;
             System.out.println("[ERROR] Could not listen on port " + PORT);
         } finally {
             if(udpHandler != null)  udpHandler.end();
-            executor.shutdown();
+            clientsExecutor.shutdown();
         }
     }
 
-    private static void acceptNewClient(ServerSocket serverSocket, MessageSender messageSender, ExecutorService executor)  throws IOException {
+    private static void acceptNewClient(ServerSocket serverSocket, MessageSender messageSender, ExecutorService clientExecutor)  throws IOException {
         Socket clientSocket = serverSocket.accept();
         ClientHandler clientHandler = new ClientHandler(clientSocket, messageSender, clientId++);
         messageSender.add(clientHandler, clientSocket.getOutputStream());
-        executor.execute(clientHandler);
+        clientExecutor.execute(clientHandler);
     }
 }

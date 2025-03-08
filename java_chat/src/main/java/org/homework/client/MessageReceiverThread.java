@@ -33,8 +33,4 @@ public class MessageReceiverThread extends Thread {
             }
         }
     }
-
-    public void end(){
-        running = false;
-    }
 }

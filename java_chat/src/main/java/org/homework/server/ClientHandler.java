@@ -21,14 +21,14 @@ public class ClientHandler implements Runnable {
         try {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("[ClientHandler] Error creating input stream for client " + id);
         }
     }
 
     @Override
     public void run() {
         try {
-            System.out.println("Client " + id + " connected.");
+            System.out.println("Client " + id + " connected");
             messageSender.sendWelcomeMessage(this);
 
             String inputLine;
@@ -36,11 +36,11 @@ public class ClientHandler implements Runnable {
                 if (Objects.equals(inputLine, "q")) {
                     break;
                 }
-                System.out.println("[Client_" + id + "] Broadcasted: " + inputLine);
+                System.out.println("[Client_" + id + "] Broadcast: " + inputLine);
                 messageSender.broadcast("[USER_" + id + "]: " + inputLine, this);
             }
             messageSender.disconnect(this);
-            System.out.println("Client " + id + " disconnected.");
+            System.out.println("Client " + id + " disconnected");
         } catch (IOException e) {
             System.out.println("[ClientHandler] Error reading from client " + id);
         } finally {
@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable {
                 in.close();
                 clientSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("[ClientHandler] Error closing client " + id);
             }
         }
     }
