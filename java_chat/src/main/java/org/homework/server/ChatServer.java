@@ -6,14 +6,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class ChatServer {
 
     public static final String HOST = "localhost";
     public static final int PORT = 12345;
     private static int clientId = 0;
-    private static final int MAX_CLIENTS = 2;
+    private static final int MAX_CLIENTS = 10;
 
     public static void main(String[] args){
 

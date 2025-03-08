@@ -6,15 +6,15 @@ import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MessageSender {
 
-    List<ClientHandler> clients = new ArrayList<>();
-    Map<ClientHandler, PrintWriter> clientOuts = new HashMap<>();
+    List<ClientHandler> clients = new CopyOnWriteArrayList<>();
+    Map<ClientHandler, PrintWriter> clientOuts = new ConcurrentHashMap<>();
 
     void add(ClientHandler client, OutputStream outputStream) {
         clients.add(client);

@@ -59,4 +59,17 @@ public class ClientHandler implements Runnable {
     public Socket getClientSocket() {
         return clientSocket;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientHandler that = (ClientHandler) o;
+        return id == that.id && Objects.equals(clientSocket, that.clientSocket) && Objects.equals(messageSender, that.messageSender) && Objects.equals(in, that.in);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clientSocket, messageSender, id, in);
+    }
 }
