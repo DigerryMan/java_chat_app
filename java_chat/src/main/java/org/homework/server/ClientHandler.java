@@ -39,7 +39,7 @@ public class ClientHandler implements Runnable {
                 System.out.println("[Client_" + id + "] Broadcasted: " + inputLine);
                 messageSender.broadcast("[USER_" + id + "]: " + inputLine, this);
             }
-            messageSender.notifyDisconnect(this);
+            messageSender.disconnect(this);
             System.out.println("Client " + id + " disconnected.");
         } catch (IOException e) {
             System.out.println("[ClientHandler] Error reading from client " + id);
