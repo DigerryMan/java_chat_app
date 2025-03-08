@@ -4,6 +4,8 @@ import org.homework.server.ChatServer;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 import static java.lang.Thread.sleep;
@@ -20,6 +22,8 @@ public class ChatClient {
     private static boolean connectionLost = false;
     public static final String MULTICAST_GROUP = "230.0.0.0";
     public static final int MULTICAST_PORT = 12346;
+    private static final int THREAD_POOL_SIZE = 3;
+    private static final ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
     public static void main(String[] args){
         try {
@@ -34,9 +38,9 @@ public class ChatClient {
             udpMessageReceiverThread = new UdpMessageReceiverThread(udpSocket);
             multicastMessageReceiverThread = new MulticastMessageReceiverThread(multicastSocket);
 
-            messageReceiverThread.start();
-            udpMessageReceiverThread.start();
-            multicastMessageReceiverThread.start();
+            executor.execute(messageReceiverThread);
+            executor.execute(udpMessageReceiverThread);
+            executor.execute(multicastMessageReceiverThread);
 
             messageSender.sendMessagesFromConsole();
         }catch (UnknownHostException e) {
@@ -61,13 +65,7 @@ public class ChatClient {
     private static void disconnect() throws InterruptedException, IOException {
         if (isConnectionEstablished()) {
             System.out.println("Closing connection");
-            messageReceiverThread.end();
-            udpMessageReceiverThread.end();
-            multicastMessageReceiverThread.end();
-            sleep(5);
-            if(messageReceiverThread.isAlive()) messageReceiverThread.interrupt();
-            if(udpMessageReceiverThread.isAlive()) udpMessageReceiverThread.interrupt();
-            if(multicastMessageReceiverThread.isAlive()) multicastMessageReceiverThread.interrupt();
+            executor.shutdownNow();
             messageSender.end();
             socket.close();
             udpSocket.close();

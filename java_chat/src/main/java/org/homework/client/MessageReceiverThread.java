@@ -22,7 +22,7 @@ public class MessageReceiverThread extends Thread {
                 System.out.println(serverResponse);
             }
         } catch (IOException e) {
-            System.out.println("Cannot read from server!");
+            System.out.println("[MessageReceiver] Closed!");
             running = false;
             ChatClient.notifyDisconnect();
         }finally {

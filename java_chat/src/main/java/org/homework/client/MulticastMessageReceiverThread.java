@@ -24,7 +24,7 @@ public class MulticastMessageReceiverThread extends Thread {
                 System.out.println("[Multicast] message: " + message);
             }
         } catch (IOException e) {
-            System.out.println("[Multicast] Cancelled receiving messages");
+            System.out.println("[MulticastMessageReceiver] Closed!");
         } finally {
             multicastSocket.close();
         }
