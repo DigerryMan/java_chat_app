@@ -38,8 +38,8 @@ public class MessageSender {
             }else{
                 tcpOut.println(userInput);
             }
-
         }
+        System.out.println("PO WAJLU");
     }
 
     private boolean isUdpMessage(String message){
@@ -50,5 +50,9 @@ public class MessageSender {
         InetAddress address = InetAddress.getByName(ChatServer.HOST);
         DatagramPacket sendPacket = new DatagramPacket(message.getBytes(), message.length(), address, ChatServer.PORT);
         udpSocket.send(sendPacket);
+    }
+
+    public void end(){
+        tcpOut.close();
     }
 }

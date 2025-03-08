@@ -16,7 +16,6 @@ public class ChatClient {
 
     private static Socket socket = null;
     private static DatagramSocket udpSocket = null;
-    private static PrintWriter out = null;
     private static MessageReceiverThread messageReceiverThread = null;
     private static UdpMessageReceiverThread udpMessageReceiverThread = null;
     private static MessageSender messageSender = null;
@@ -53,19 +52,22 @@ public class ChatClient {
     }
 
     private static void disconnect() throws InterruptedException, IOException {
+        System.out.println("Disconnecting from server!!!!!!!");
         if (isConnectionEstablished()) {
             System.out.println("Closing connection");
             messageReceiverThread.end();
             udpMessageReceiverThread.end();
             sleep(5);
-            out.println("q");
-            out.close();
+            if(messageReceiverThread.isAlive()) messageReceiverThread.interrupt();
+            if(udpMessageReceiverThread.isAlive()) udpMessageReceiverThread.interrupt();
+            messageSender.end();
             socket.close();
+            udpSocket.close();
         }
     }
 
     private static boolean isConnectionEstablished(){
-        return socket != null && out != null && messageReceiverThread != null;
+        return socket != null && messageReceiverThread != null && udpSocket != null && udpMessageReceiverThread != null;
     }
 
     public static void notifyDisconnect() {

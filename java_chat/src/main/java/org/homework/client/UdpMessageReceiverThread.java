@@ -22,7 +22,7 @@ public class UdpMessageReceiverThread extends Thread {
                 receiveMessageAndSendResponse(buffer, socket);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("[UDPMessageReceiver] Cannot read from server!");
         } finally {
             socket.close();
         }
