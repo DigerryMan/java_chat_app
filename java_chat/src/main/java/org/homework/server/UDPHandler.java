@@ -38,7 +38,7 @@ public class UDPHandler extends Thread{
             udpSocket.receive(receivedPacket);
 
             String message = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
-            System.out.println("Received UDP message: " + message);
+            System.out.println("Received UDP message: \n" + message);
 
             messageSender.udpBroadcast(udpSocket, message, receivedPacket);
         }

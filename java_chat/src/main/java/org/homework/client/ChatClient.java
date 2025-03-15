@@ -4,6 +4,7 @@ import org.homework.server.ChatServer;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +24,7 @@ public class ChatClient {
     private static final ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
     public static void main(String[] args){
+        String multicastUUID = UUID.randomUUID().toString();
         try {
             socket = new Socket(ChatServer.HOST, ChatServer.PORT);
             udpSocket = new DatagramSocket(socket.getLocalPort());
@@ -30,10 +32,10 @@ public class ChatClient {
             InetSocketAddress address = new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT);
             multicastSocket.joinGroup(address, null);
 
-            messageSender = new MessageSender(socket.getOutputStream(), udpSocket, multicastSocket, address);
+            messageSender = new MessageSender(socket.getOutputStream(), udpSocket, multicastSocket, address, multicastUUID);
             messageReceiverThread = new MessageReceiverThread(socket.getInputStream());
             udpMessageReceiverThread = new UdpMessageReceiverThread(udpSocket);
-            multicastMessageReceiverThread = new MulticastMessageReceiverThread(multicastSocket);
+            multicastMessageReceiverThread = new MulticastMessageReceiverThread(multicastSocket, multicastUUID);
 
             executor.execute(messageReceiverThread);
             executor.execute(udpMessageReceiverThread);

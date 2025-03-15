@@ -14,9 +14,10 @@ public class MessageSender {
     private final DatagramSocket udpSocket;
     private final MulticastSocket multicastSocket;
     private final InetSocketAddress multicastAddress;
+    private final String multicastUUID;
     private static final String ASCII_ART =
             """
-                    _    _  ______ _    \s
+                     _    _  ______ _    \s
                     | |  | ||  ____| |   \s
                     | |__| || |__  | |__ \s
                     |  __  ||  __| | '_ \\\s
@@ -24,11 +25,12 @@ public class MessageSender {
                     |_|  |_||______|_| |_|""";
 
 
-    MessageSender(OutputStream tcpOutputStream, DatagramSocket udpSocket, MulticastSocket multicastSocket, InetSocketAddress multicastAddress){
+    MessageSender(OutputStream tcpOutputStream, DatagramSocket udpSocket, MulticastSocket multicastSocket, InetSocketAddress multicastAddress, String multicastUUID) {
         this.tcpOut = new PrintWriter(tcpOutputStream, true);
         this.udpSocket = udpSocket;
         this.multicastSocket = multicastSocket;
         this.multicastAddress = multicastAddress;
+        this.multicastUUID = multicastUUID;
     }
 
     void sendMessagesFromConsole() throws IOException {
@@ -37,7 +39,7 @@ public class MessageSender {
         while (!Objects.equals(userInput, "q") && !ChatClient.isConnectionLost()) {
             userInput = scanner.nextLine();
             if (isUdpMessage(userInput)) {
-                //sendUdpMessage(userInput.substring(3));
+                //sendUdpMessage(userInput.substring(1));
                 sendUdpMessage(ASCII_ART);
             } else if (isMulticast(userInput)) {
                 sendMulticastMessage(userInput.substring(1));
@@ -48,7 +50,7 @@ public class MessageSender {
     }
 
     private boolean isUdpMessage(String message){
-        return message.startsWith("udp");
+        return message.startsWith("U");
     }
     private boolean isMulticast(String message){
         return message.startsWith("M");
@@ -61,7 +63,9 @@ public class MessageSender {
     }
 
     private void sendMulticastMessage(String message) throws IOException {
-        DatagramPacket sendPacket = new DatagramPacket(message.getBytes(), message.length(), multicastAddress.getAddress(), multicastAddress.getPort());
+        String sendMessage = multicastUUID + " " + message;
+        DatagramPacket sendPacket = new DatagramPacket(sendMessage.getBytes(), sendMessage.length(),
+                                        multicastAddress.getAddress(), multicastAddress.getPort());
         multicastSocket.send(sendPacket);
     }
 
